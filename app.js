@@ -52,20 +52,26 @@ $("#add-user").on("click", function(event) {
 
   database.ref().on("child_added", function(snapshot) {
     // Log everything that's coming out of snapshot
-    console.log(snapshot.val().name);
-    console.log(snapshot.val().destination);
 
+
+    var nextTrainTime = "";
+    var frequency = snapshot.val().frequency;
     // Change the HTML to reflect
     var start = moment.unix(snapshot.val().firstTrainTime).format('HH:mm')
     moment(start, "HH:mm")
-    var currentTime = moment();
-    var test = moment(start, "HH:mm").diff(moment(), 'minutes')
+    var firstTimeConverted = moment(start, "HH:mm").subtract(1, "years");
+ 
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var tRemainder = diffTime % frequency;
+    var tMinutesTillTrain = frequency - tRemainder;
+    nextTrainTime = moment().add(tMinutesTillTrain, "minutes").format("hh:mm A");
     
     var first = $('<tr scope="row">');
     $(first).append('<td>' + snapshot.val().name + '</td>')
     $(first).append('<td>' + snapshot.val().destination + '</td>')
     $(first).append('<td>' + snapshot.val().frequency + '</td>')
-    $(first).append('<td>' + test + '</td>')
+    $(first).append('<td>' + nextTrainTime + '</td>')
+    $(first).append('<td>' + tMinutesTillTrain + '</td>')
     $('#results').append(first);
 
     // Handle the errors
