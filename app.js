@@ -25,9 +25,9 @@ var firstTrainTime =0
 
 
 $("#add-user").on("click", function(event) {
-
+    console.log
     event.preventDefault();
-
+    console.log('clicking')
 
     // Grabbed values from text boxes
     name = $("#inputName").val().trim();
@@ -52,17 +52,17 @@ $("#add-user").on("click", function(event) {
 
   database.ref().on("child_added", function(snapshot) {
     // Log everything that's coming out of snapshot
-
+    console.log(snapshot.val().name);
+    console.log(snapshot.val().destination);
 
     // Change the HTML to reflect
     var start = moment.unix(snapshot.val().firstTrainTime).format('HH:mm')
-
-
+    var test = moment().diff(moment(start), "minutes")
     var first = $('<tr scope="row">');
     $(first).append('<td>' + snapshot.val().name + '</td>')
     $(first).append('<td>' + snapshot.val().destination + '</td>')
     $(first).append('<td>' + snapshot.val().frequency + '</td>')
-    $(first).append('<td>' + start + '</td>')
+    $(first).append('<td>' + test + '</td>')
     $('#results').append(first);
 
     // Handle the errors
