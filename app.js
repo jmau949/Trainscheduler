@@ -57,7 +57,10 @@ $("#add-user").on("click", function(event) {
 
     // Change the HTML to reflect
     var start = moment.unix(snapshot.val().firstTrainTime).format('HH:mm')
-    var test = moment().diff(moment(start), "minutes")
+    moment(start, "HH:mm")
+    var currentTime = moment();
+    var test = moment(start, "HH:mm").diff(moment(), 'minutes')
+    
     var first = $('<tr scope="row">');
     $(first).append('<td>' + snapshot.val().name + '</td>')
     $(first).append('<td>' + snapshot.val().destination + '</td>')
